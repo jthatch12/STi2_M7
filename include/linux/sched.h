@@ -4,7 +4,7 @@
 #define CSIGNAL		0x000000ff	
 #define CLONE_VM	0x00000100	
 #define CLONE_FS	0x00000200	
-#define CLONE_FILES	0x00000400	
+#define CLONE_FILES	0x00000400
 #define CLONE_SIGHAND	0x00000800	
 #define CLONE_PTRACE	0x00002000	
 #define CLONE_VFORK	0x00004000	
@@ -118,7 +118,14 @@ extern unsigned long nr_iowait(void);
 extern unsigned long nr_iowait_cpu(int cpu);
 extern unsigned long this_cpu_load(void);
 
+ 
+
+extern void sched_update_nr_prod(int cpu, unsigned long nr, bool inc);
 extern void sched_get_nr_running_avg(int *avg, int *iowait_avg);
+extern unsigned long get_avg_nr_running(unsigned int cpu);
+extern unsigned long avg_nr_running(void);
+
+
 
 extern void calc_global_load(unsigned long ticks);
 
