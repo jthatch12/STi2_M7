@@ -32,6 +32,10 @@ config IOSCHED_DEADLINE
 	  a new point in the service tree and doing a batch of IO from there
 	  in case of expiry.
 
+config IOSCHED_SIO
+	tristate "SIO I/O scheduler"
+	default y
+
 config IOSCHED_ROW
 	tristate "ROW I/O scheduler"
 	default y
