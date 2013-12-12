@@ -22,6 +22,7 @@ struct android_usb_platform_data {
 	u32 swfi_latency;
 	u8 usb_core_id;
 	bool cdrom;
+	int nluns;
 };
 
 #endif	/* __LINUX_USB_ANDROID_H */

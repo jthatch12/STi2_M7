@@ -20,9 +20,6 @@ run_program("/tmp/busybox", "dd", "if=/dev/block/mmcblk0p33", "of=/tmp/boot.img"
 run_program("/tmp/unpackbootimg", "-i", "/tmp/boot.img", "-o", "/tmp/");
 run_program("/tmp/mkbootimg.sh");
 run_program("/tmp/busybox", "dd", "if=/tmp/newboot.img", "of=/dev/block/mmcblk0p33");
-ui_print("==== Renaming binaries ====");
-ui_print("  /system/bin/mpdecision -> mpdecision_bck");
-run_program("/tmp/compatibility.sh");
 unmount("/system");
 ui_print("===================================");
 ui_print("==== Installation Completed! ==== *");
