@@ -317,6 +317,7 @@ __ATTR(_name, 0644, show_##_name, store_##_name)
 /*********************************************************************
  *                        CPUFREQ 2.6. INTERFACE                     *
  *********************************************************************/
+u64 get_cpu_idle_time(unsigned int cpu, u64 *wall, int io_busy);
 int cpufreq_get_policy(struct cpufreq_policy *policy, unsigned int cpu);
 int cpufreq_update_policy(unsigned int cpu);
 
@@ -372,9 +373,6 @@ extern struct cpufreq_governor cpufreq_gov_ondemand;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_CONSERVATIVE)
 extern struct cpufreq_governor cpufreq_gov_conservative;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_conservative)
-#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_WREXY)
-extern struct cpufreq_governor cpufreq_gov_wrexy;
-#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_wrexy)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE)
 extern struct cpufreq_governor cpufreq_gov_interactive;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_interactive)
@@ -421,9 +419,7 @@ void cpufreq_frequency_table_put_attr(unsigned int cpu);
 
 /* hooks to scale interactive tunables based on load */
 extern void scale_above_hispeed_delay(unsigned int above_hispeed_delay);
-extern void scale_go_hispeed_load(unsigned int go_hispeed_load);
 extern void scale_timer_rate(unsigned int timer_rate);
 extern void scale_min_sample_time(unsigned int min_sample_time);
-
 
 #endif /* _LINUX_CPUFREQ_H */
