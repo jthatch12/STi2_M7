@@ -1,0 +1,44 @@
+From e44997866e62c0b7d0a8586bb814cc0aa99b0d8e Mon Sep 17 00:00:00 2001
+From: Stepan Moskovchenko <stepanm@codeaurora.org>
+Date: Tue, 22 Oct 2013 18:57:56 -0700
+Subject: [PATCH] ARM: Use -mcpu=cortex-a15 when targeting MSM Krait CPUs
+
+Enable compiler optimizations specific to the Cortex-A15
+processor when targeting MSM Krait CPUs. This is necessary
+take advantage of the UDIV/SDIV instructions supported by
+these processors. To accomplish this, we need to remove the
+-march=armv7-a ISA restriction from the compiler options
+because 'cortex-a15' is a superset of 'armv7-a'.
+
+Change-Id: I6215aecc11fb4f77c971de7b84f68649ef234357
+Signed-off-by: Stepan Moskovchenko <stepanm@codeaurora.org>
+---
+ arch/arm/Makefile | 12 [32m++++++++++++[m
+ 1 file changed, 12 insertions(+)
+
+[1mdiff --git a/arch/arm/Makefile b/arch/arm/Makefile[m
+[1mindex 6d763f1..ca1b087 100644[m
+[1m--- a/arch/arm/Makefile[m
+[1m+++ b/arch/arm/Makefile[m
+[36m@@ -69,6 +69,18 @@[m [march-$(CONFIG_CPU_32v4T)	:=-D__LINUX_ARM_ARCH__=4 -march=armv4t[m
+ arch-$(CONFIG_CPU_32v4)		:=-D__LINUX_ARM_ARCH__=4 -march=armv4[m
+ arch-$(CONFIG_CPU_32v3)		:=-D__LINUX_ARM_ARCH__=3 -march=armv3[m
+ [m
+[32m+[m[32m# Since 'cortex-a15' is a superset of the 'armv7-a' arch spec, we need to[m
+[32m+[m[32m# explicitly redefine the arch options to not include '-march=armv7-a' when[m
+[32m+[m[32m# generating code for Krait, which is compatible with the instruction set of the[m
+[32m+[m[32m# Cortex-A15, because GCC will warn us about ambiguous ISA restrictions caused[m
+[32m+[m[32m# by seemingly conflicting -march and -mcpu options.[m
+[32m+[m[32m# If $(CC) does not support the -mcpu=cortex-a15 option, fall back on passing[m
+[32m+[m[32m# -march=armv7-a to specify the ISA restriction, though this is suboptimal. To[m
+[32m+[m[32m# keep things simpler, we don't bother with a fallback option if the compiler[m
+[32m+[m[32m# doesn't even support -march=armv7-a, since in that situation we would have[m
+[32m+[m[32m# bigger problems.[m
+[32m+[m[32march-$(CONFIG_ARCH_MSM_KRAIT)	:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-mcpu=cortex-a15,-march=armv7-a)[m
+[32m+[m
+ # This selects how we optimise for the processor.[m
+ tune-$(CONFIG_CPU_ARM610)	:=-mtune=arm610[m
+ tune-$(CONFIG_CPU_ARM710)	:=-mtune=arm710[m
+-- 
+1.8.5.3
+
